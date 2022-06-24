@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instaclone/src/controller/bottom_nav_controller.dart';
+import 'package:instaclone/src/pages/active_history.dart';
 import 'package:instaclone/src/pages/home.dart';
 import 'package:instaclone/src/pages/search.dart';
 import 'package:instaclone/src/pages/upload.dart';
@@ -26,12 +27,9 @@ class App extends GetView<BottomNavController> {
                 );
               },
             ),
-            const Upload(),
-            Container(
-              child : Center(
-                  child: Text("ACTIVITY")
-              ),
-            ),
+            // const Upload(),
+            Container(),
+            const ActiveHistory(),
             Container(
               child : Center(
                   child: Text("MYPAGE")
