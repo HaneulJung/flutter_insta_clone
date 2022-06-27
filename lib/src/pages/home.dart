@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:instaclone/src/components/avatar_widget.dart';
 import 'package:instaclone/src/components/image_data.dart';
 import 'package:instaclone/src/components/post_widget.dart';
+import 'package:instaclone/src/controller/home_controller.dart';
 
-class Home extends StatelessWidget {
+class Home extends GetView<HomeController> {
   const Home({Key? key}) : super(key: key);
 
   Widget _mystory(){
@@ -60,12 +62,12 @@ class Home extends StatelessWidget {
   }
 
   Widget _postList() {
-    return Column(
+    return Obx(() => Column(
       children: List.generate(
-        50,
-        (index) => PostWidget()
-      ).toList(),
-    );
+        controller.postList.length,
+        (index) => PostWidget(
+            post: controller.postList[index])).toList(),
+    ));
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instaclone/src/controller/upload_controller.dart';
 
 import '../components/message_popup.dart';
 import '../pages/upload.dart';
@@ -20,7 +21,11 @@ class BottomNavController extends GetxController{
     var page = PageName.values[value];
     switch (page){
       case PageName.UPLOAD:
-        Get.to(() => Upload());
+        Get.to(() => Upload(), 
+            binding: BindingsBuilder(() {
+              Get.put(UploadController());
+            })
+        );
         break;
       case PageName.HOME:
       case PageName.SEARCH:

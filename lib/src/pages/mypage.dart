@@ -2,25 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:instaclone/src/components/avatar_widget.dart';
 import 'package:instaclone/src/components/image_data.dart';
 import 'package:instaclone/src/components/user_card.dart';
+import 'package:instaclone/src/controller/auth_controller.dart';
+import 'package:instaclone/src/controller/mypage_controller.dart';
 
-class MyPage extends StatefulWidget {
+class MyPage extends GetView<MyPageController> {
   const MyPage({Key? key}) : super(key: key);
-
-  @override
-  State<MyPage> createState() => _MyPageState();
-}
-
-class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 2, vsync: this);
-  }
 
   Widget _statisticsOne(String title, int value) {
     return Column(
@@ -41,7 +31,7 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
   Widget _information() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Column(
+      child: Obx(() => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
@@ -49,7 +39,7 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
             children: [
               AvatarWidget(
                   thumbPath:
-                      'https://letsenhance.io/static/334225cab5be263aad8e3894809594ce/75c5a/MainAfter.jpg',
+                      controller.targetUser.value.thumbnail!,
                   type: AvatarType.TYPE3,
                   size: 80),
               const SizedBox(width: 10),
@@ -64,12 +54,12 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            "안녕하세요 ㅇㅇ 입니다. 구독 좋아요 부탁드립니다.",
+          Text(
+            controller.targetUser.value.description!,
             style: TextStyle(fontSize: 13, color: Colors.black),
           )
         ],
-      ),
+      )),
     );
   }
 
@@ -152,7 +142,7 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
     return TabBar(
         indicatorColor: Colors.black,
         indicatorWeight: 1,
-        controller: tabController,
+        controller: controller.tabController,
         tabs: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -191,11 +181,13 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text("Cielo",
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
+        title:Obx(() => Text(
+          controller.targetUser.value.nickname!,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black)
+        )),
         actions: [
           GestureDetector(
             onTap: () {},

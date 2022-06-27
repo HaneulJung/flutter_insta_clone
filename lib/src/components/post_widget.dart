@@ -3,9 +3,13 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:instaclone/src/components/avatar_widget.dart';
 import 'package:instaclone/src/components/image_data.dart';
+import 'package:instaclone/src/model/post.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({Key? key}) : super(key: key);
+  final Post post;
+
+  const PostWidget({Key? key, required this.post}) : super(key: key);
 
   Widget _header() {
     return Padding(
@@ -14,9 +18,9 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AvatarWidget(
-            thumbPath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrTFrhr_-pYR74jUgOy7IerAoHAX3zPIZZcg&usqp=CAU',
+            thumbPath: post.userInfo!.thumbnail!,
             type: AvatarType.TYPE3,
-            nickName: "cielo",
+            nickName: post.userInfo!.nickname,
             size: 40,
           ),
           GestureDetector(
@@ -36,7 +40,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _image() {
     return CachedNetworkImage(
-      imageUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+      imageUrl: post.thumbnail!
     );
   }
 
@@ -68,18 +72,18 @@ class PostWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            "좋아요 150개",
-            style: TextStyle(
+            "좋아요 ${post.likeCount??0}개",
+            style: const TextStyle(
               fontWeight: FontWeight.bold
             ),
           ),
           ExpandableText(
-            "콘텐츠 1입니다\n콘텐츠 1입니다\n콘텐츠 1입니다\n콘텐츠 1입니다\n콘텐츠 1입니다\n콘텐츠 1입니다\n",
-            prefixText: "cielo",
+            post.description??'',
+            prefixText: post.userInfo!.nickname,
             onPrefixTap: () {
               print('cielo page move');
             },
-            prefixStyle: TextStyle(
+            prefixStyle:const TextStyle(
               fontWeight: FontWeight.bold
             ),
             expandText: "더보기",
@@ -116,8 +120,8 @@ class PostWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Text(
-        "1일전",
-        style: TextStyle(
+        timeago.format(post.createdAt!),
+        style: const TextStyle(
           color: Colors.grey,
           fontSize: 11
         ),),
